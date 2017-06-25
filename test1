@@ -1,34 +1,43 @@
+def components = [
+	'uqam/moodle': 'moodle', 
+	'uqam/auth_saml2': 'moodle/auth/saml2',
+	'uqam/moodle_infra': '${WORKSPACE}' 
+]
+
 job('Moodle-test') {
 	multiscm {
-		 git {
-            remote {
-                url('git@bitbucket.org:uqam/moodle.git')
-                // C'est le id de l'identifiant..
-                credentials('b49e52ff-27c6-4d38-b288-dbcd2daef492')
-                branches('UQAM_30_DEV')
-            }
-            extensions {
-	            //cleanAfterCheckout()
-	            relativeTargetDirectory('moodle')
-            }
-	    }
-
-	    git {
-            remote {
-                url('git@bitbucket.org:uqam/auth_saml2.git')
-                // C'est le id de l'identifiant..
-                credentials('b49e52ff-27c6-4d38-b288-dbcd2daef492')
-                branches('UQAM_30_DEV')
-            }
-            extensions {
-	            //cleanAfterCheckout()
-	            relativeTargetDirectory('moodle/auth/saml2')
-            }
-	    }
+	 def mycomps = components.keySet()
+		mycomps.each {
+		    def depot = "git@bitbucket.org:"+"${it}"+".git"
+		    def folder = components["${it}"]
+			git {
+	            remote {
+	                url(depot)
+	                // C'est le id de l'identifiant..
+	                credentials('b49e52ff-27c6-4d38-b288-dbcd2daef492')
+	                branches('UQAM_30_DEV')
+	            }
+	            extensions {
+		            cleanAfterCheckout()
+		            relativeTargetDirectory(folder)
+	            }
+	    	}
+		
+		}
 	}
 
 	steps {
 	    // Etape anterieure genere folder @tmp qu'on veut efface.
-		shell("find $\{WORKSPACE\} -name '*@tmp' -exec rm -rf {} +; ")
+		//shell("find $\\{WORKSPACE\\} -name '*@tmp' -exec rm -rf {} +; ")
+
+		dockerBuildAndPublish {
+            repositoryName('nmolleruq/uqammdl')
+            tag('${GIT_REVISION,length=5}')
+            registryCredentials('dockerhub')
+            forcePull(false)
+            forceTag(false)
+            createFingerprints(false)
+            skipDecorate()
+        }
 	}
 }
