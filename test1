@@ -4,18 +4,25 @@ def components = [
 	'uqam/moodle_infra': '${WORKSPACE}' 
 ]
 
+def mybranches = [
+	'uqam/moodle': 'MOODLE_33_STABLE', 
+	'uqam/auth_saml2': 'UQAM_30_DEV',
+	'uqam/moodle_infra': 'UQAM_WEB'
+]
+
 job('Moodle-test') {
 	multiscm {
 	 def mycomps = components.keySet()
 		mycomps.each {
 		    def depot = "git@bitbucket.org:"+"${it}"+".git"
 		    def folder = components["${it}"]
+		    def mybranch = mybranches["${it}"]
 			git {
 	            remote {
 	                url(depot)
 	                // C'est le id de l'identifiant..
 	                credentials('b49e52ff-27c6-4d38-b288-dbcd2daef492')
-	                branches('UQAM_30_DEV')
+	                branch(mybranch)
 	            }
 	            extensions {
 		            cleanAfterCheckout()
