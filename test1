@@ -14,7 +14,7 @@ job('Moodle-test') {
 	multiscm {
 	 def mycomps = components.keySet()
 		mycomps.each {
-		    def depot = "git@bitbucket.org:"+"${it}"+".git"
+		    def depot = "https://bitbucket.org/"+"${it}"+".git"
 		    def folder = components["${it}"]
 		    def mybranch = mybranches["${it}"]
 			git {
