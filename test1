@@ -7,8 +7,6 @@ def findInstallPath(String name) {
 
 
 def components = [
-	'uqam/moodle': 'moodle', 
-	'uqam/auth_saml2': 'moodle/auth/saml2',
 	'uqam/moodle_infra': '${WORKSPACE}' 
 ]
 
@@ -23,7 +21,7 @@ job('Moodle-test') {
 		mycomps.each {
 		    def depot = "https://bitbucket.org/"+"${it}"+".git"
 		    // def folder = components["${it}"]
-		    def folder = findInstallPath("${it}")
+		    def folder = components["${it}"] || findInstallPath("${it}")
 		    def mybranch = mybranches["${it}"]
 			git {
 	            remote {
