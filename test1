@@ -1,3 +1,11 @@
+def findInstallPath(String name) {
+	def parts = name.split(/\//)[1]
+	def components = parts.split(/_/)
+
+	components.join("/")
+}
+
+
 def components = [
 	'uqam/moodle': 'moodle', 
 	'uqam/auth_saml2': 'moodle/auth/saml2',
@@ -14,7 +22,8 @@ job('Moodle-test') {
 	 def mycomps = components.keySet()
 		mycomps.each {
 		    def depot = "https://bitbucket.org/"+"${it}"+".git"
-		    def folder = components["${it}"]
+		    // def folder = components["${it}"]
+		    def folder = findInstallPath("${it}")
 		    def mybranch = mybranches["${it}"]
 			git {
 	            remote {
