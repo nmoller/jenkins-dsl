@@ -1,6 +1,10 @@
 
+// On place les composantes dans un dossier $WORKSPACE/base_folder
 def base_folder = "moodle"
 
+// On obtient l'emplacement a partir du nom de depot
+// S'il y a une composante que ne possede pas le bon nom on l'explicite
+// dans components
 def findInstallPath(String name, String base_folder) {
 	def parts = name.split(/\//)[1]
 	def components = parts.split(/_/)
@@ -17,6 +21,7 @@ def components = [
 	'uqam/moodle_infra': '${WORKSPACE}' 
 ]
 
+// Si une composante utilise une autre branche que UQAM_30_DEV, on l'explicite ici
 def mybranches = [
 	'uqam/moodle': 'MOODLE_33_STABLE', 
 	'uqam/moodle_infra': 'UQAM_WEB'
@@ -51,7 +56,7 @@ job('Moodle-test') {
 	}
 
 	steps {
-	    // Etape anterieure genere folder @tmp qu'on veut efface.
+	    // Etape anterieure genere folders @tmp qu'on veut efface.
 		shell("find \$WORKSPACE -name '*@tmp' -exec rm -rf {} +; ")
 
 		dockerBuildAndPublish {
