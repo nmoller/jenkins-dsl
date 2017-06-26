@@ -4,8 +4,8 @@ def base_folder = "moodle"
 def findInstallPath(String name, String base_folder) {
 	def parts = name.split(/\//)[1]
 	def components = parts.split(/_/)
-	// On place les composantes dans un dossier $WORKSPACE/moodle
-    def component_path = "moodle" + components.join("/")
+	// On place les composantes dans un dossier $WORKSPACE/base_folder
+    def component_path = "${base_folder}/" + components.join("/")
 
 }
 
@@ -27,7 +27,6 @@ job('Moodle-test') {
 	 def mycomps = components.keySet()
 		mycomps.each {
 		    def depot = "https://bitbucket.org/"+"${it}"+".git"
-		    // def folder = components["${it}"]
 		    // On peut overrrider le chemin 
 		    def folder = components["${it}"]?  components["${it}"]: findInstallPath("${it}", "${base_folder}")
 		    def mybranch = mybranches["${it}"]
