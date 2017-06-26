@@ -6,7 +6,6 @@ def components = [
 
 def mybranches = [
 	'uqam/moodle': 'MOODLE_33_STABLE', 
-	'uqam/auth_saml2': 'UQAM_30_DEV',
 	'uqam/moodle_infra': 'UQAM_WEB'
 ]
 
@@ -22,7 +21,11 @@ job('Moodle-test') {
 	                url(depot)
 	                // C'est le id de l'identifiant..
 	                credentials('b49e52ff-27c6-4d38-b288-dbcd2daef492')
-	                branch(mybranch)
+	                if (mybranch = null) {
+	                	branch('UQAM_30_DEV')
+	                } else {
+	                	branch(mybranch)
+	                }
 	            }
 	            extensions {
 		            cleanAfterCheckout()
