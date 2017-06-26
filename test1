@@ -5,8 +5,7 @@ def findInstallPath(String name, String base_folder) {
 	def parts = name.split(/\//)[1]
 	def components = parts.split(/_/)
 	// On place les composantes dans un dossier $WORKSPACE/moodle
-    components.add(0, base_folder)
-	components.join("/")
+    def component_path = "moodle" + components.join("/")
 
 }
 
