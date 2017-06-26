@@ -1,9 +1,11 @@
 
+def base_folder = "moodle"
+
 def findInstallPath(String name) {
 	def parts = name.split(/\//)[1]
 	def components = parts.split(/_/)
 	// On place les composantes dans un dossier $WORKSPACE/moodle
-    components.add(0, "moodle")
+    components.add(0, "${base_folder}")
 	components.join("/")
 
 }
@@ -11,8 +13,8 @@ def findInstallPath(String name) {
 
 // On veu pouvoir placer des elements ailleurs
 def components = [
-    'uqam/moodle': ,
-    'uqam/auth_saml2': ,
+    'uqam/moodle': "${base_folder}",
+    'uqam/auth_saml2': null,
 	'uqam/moodle_infra': '${WORKSPACE}' 
 ]
 
