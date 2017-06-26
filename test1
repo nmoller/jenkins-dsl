@@ -1,11 +1,15 @@
+
 def findInstallPath(String name) {
 	def parts = name.split(/\//)[1]
 	def components = parts.split(/_/)
-
+	// On place les composantes dans un dossier $WORKSPACE/moodle
+    components.add(0, "moodle")
 	components.join("/")
+
 }
 
 
+// On veu pouvoir placer des elements ailleurs
 def components = [
 	'uqam/moodle_infra': '${WORKSPACE}' 
 ]
@@ -21,7 +25,8 @@ job('Moodle-test') {
 		mycomps.each {
 		    def depot = "https://bitbucket.org/"+"${it}"+".git"
 		    // def folder = components["${it}"]
-		    def folder = components["${it}"] || findInstallPath("${it}")
+		    // On peut overrrider le chemin 
+		    def folder = components["${it}"]?  components["${it}"]: findInstallPath("${it}")
 		    def mybranch = mybranches["${it}"]
 			git {
 	            remote {
