@@ -11,6 +11,8 @@ def findInstallPath(String name) {
 
 // On veu pouvoir placer des elements ailleurs
 def components = [
+    'uqam/moodle': ,
+    'uqam/auth_saml2': ,
 	'uqam/moodle_infra': '${WORKSPACE}' 
 ]
 
