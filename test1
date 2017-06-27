@@ -18,14 +18,14 @@ def findInstallPath(String name, String base_folder) {
 def components = [
     'uqam/moodle': "${base_folder}",
     'uqam/auth_saml2': null,
-    'uqam/configphp' : 'config'
+    'uqam/configphp' : 'config',
 	'uqam/docker-mdluqam': '${WORKSPACE}' 
 ]
 
 // Si une composante utilise une autre branche que UQAM_30_DEV, on l'explicite ici
 def mybranches = [
 	'uqam/moodle': 'MOODLE_33_STABLE', 
-	'uqam/configphp' : 'UQAM_30_k8s'
+	'uqam/configphp' : 'UQAM_30_k8s',
 	'uqam/docker-mdluqam': 'UQAM_WEB'
 ]
 
