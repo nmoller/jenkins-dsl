@@ -19,7 +19,7 @@ def components = [
     'uqam/moodle': "${base_folder}",
     'uqam/auth_saml2': null,
     'uqam/configphp' : 'config',
-	'uqam/docker-mdluqam': '${WORKSPACE}' 
+	'uqam/docker-mdluqam': 'docker' 
 ]
 
 // Si une composante utilise une autre branche que UQAM_30_DEV, on l'explicite ici
@@ -59,7 +59,7 @@ job('Moodle-test') {
 
 	steps {
 	    // Etape anterieure genere folders @tmp qu'on veut efface.
-		shell("find \$WORKSPACE -name '*@tmp' -exec rm -rf {} +; ")
+		shell("find \$WORKSPACE -name '*@tmp' -exec rm -rf {} +; && cp ${WORKSPACE}/docker/Dockerfile ${WORKSPACE}")
 
 		dockerBuildAndPublish {
             repositoryName('nmolleruq/uqammdl')
