@@ -24,8 +24,9 @@ def components = [
 
 // Si une composante utilise une autre branche que UQAM_30_DEV, on l'explicite ici
 def mybranches = [
-	'uqam/moodle': 'MOODLE_33_STABLE', 
-	'uqam/configphp' : 'UQAM_30_k8s',
+	'uqam/moodle':         'MOODLE_33_STABLE',
+	'uqam/auth_saml2':     'MOODLE_33PLUS', 
+	'uqam/configphp' :     'UQAM_30_k8s',
 	'uqam/docker-mdluqam': 'UQAM_WEB'
 ]
 
@@ -60,6 +61,10 @@ job('Moodle-test') {
 	steps {
 	    // Etape anterieure genere folders @tmp qu'on veut efface.
 		shell("find \$WORKSPACE -name '*@tmp' -exec rm -rf {} +; ")
+		// À révoir pour que ça marche pour toute la gangue.
+		shell("rm -rf \$WORKSPACE/moodle/.git")
+		shell("rm -rf \$WORKSPACE/moodle/auth/saml2/.git")
+		// Mettre le Dockerfile à la racine du $WORKSPACE
 		shell("cp \$WORKSPACE/docker/Dockerfile \$WORKSPACE")
 
 		dockerBuildAndPublish {
