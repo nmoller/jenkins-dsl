@@ -5,12 +5,12 @@ def base_folder = "moodle"
 // On obtient l'emplacement a partir du nom de depot
 // S'il y a une composante que ne possede pas le bon nom on l'explicite
 // dans components
+// ATTENTION: blocks/completion_progress, blocks/side_bar, blocks/uqam_notification
 def findInstallPath(String name, String base_folder) {
 	def parts = name.split(/\//)[1]
 	def components = parts.split(/_/)
 	// On place les composantes dans un dossier $WORKSPACE/base_folder
     def component_path = "${base_folder}/" + components.join("/")
-
 }
 
 
@@ -18,13 +18,15 @@ def findInstallPath(String name, String base_folder) {
 def components = [
     'uqam/moodle': "${base_folder}",
     'uqam/auth_saml2': null,
-	'uqam/moodle_infra': '${WORKSPACE}' 
+    'uqam/configphp' : 'config'
+	'uqam/docker-mdluqam': '${WORKSPACE}' 
 ]
 
 // Si une composante utilise une autre branche que UQAM_30_DEV, on l'explicite ici
 def mybranches = [
 	'uqam/moodle': 'MOODLE_33_STABLE', 
-	'uqam/moodle_infra': 'UQAM_WEB'
+	'uqam/configphp' : 'UQAM_30_k8s'
+	'uqam/docker-mdluqam': 'UQAM_WEB'
 ]
 
 job('Moodle-test') {
@@ -39,7 +41,7 @@ job('Moodle-test') {
 	            remote {
 	                url(depot)
 	                // C'est le id de l'identifiant..
-	                credentials('b49e52ff-27c6-4d38-b288-dbcd2daef492')
+	                credentials('5e10a0ed-a2f0-476e-ad95-956149d7fd62')
 	                if (mybranch == null) {
 	                	branch('UQAM_30_DEV')
 	                } else {
@@ -62,7 +64,7 @@ job('Moodle-test') {
 		dockerBuildAndPublish {
             repositoryName('nmolleruq/uqammdl')
             tag('${GIT_REVISION,length=5}')
-            registryCredentials('dockerhub')
+            registryCredentials('dockerhub-nmolleruq')
             forcePull(false)
             forceTag(false)
             createFingerprints(false)
