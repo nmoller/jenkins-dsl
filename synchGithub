@@ -1,3 +1,12 @@
+
+def depots = [
+'uqam/auth_saml2' : 'catalyst/moodle-auth_saml2',
+'uqam/blocks_completion_progress' : 'deraadt/moodle-block_completion_progress',
+'uqam/blocks_panopto' : 'Panopto/Moodle-2.0-plugin-for-Panopto',
+'uqam/course_format_topcoll': 'gjb2048/moodle-format_topcoll',
+'uqam/moodle' : 'moodle/moodle',
+]
+
 job('ENA-SynchGH') {
 
     triggers {
@@ -10,7 +19,35 @@ job('ENA-SynchGH') {
     }
 
     steps {
-    	shell('''
+       shell('''
+       git clone --bare https://\$BB_USER:\$BB_PASS@bitbucket.org/uqam/auth_saml2.git;  
+       cd auth_saml2.git;  
+       git remote add --mirror=fetch github https://github.com/catalyst/moodle-auth_saml2.git;  
+       git fetch github;  git fetch github --tags;  git push origin --all;  git push origin --tags
+       ''')
+
+       shell('''
+       git clone --bare https://\$BB_USER:\$BB_PASS@bitbucket.org/uqam/blocks_completion_progress.git;  
+       cd blocks_completion_progress.git;  
+       git remote add --mirror=fetch github https://github.com/deraadt/moodle-block_completion_progress.git;  
+       git fetch github;  git fetch github --tags;  git push origin --all;  git push origin --tags
+       ''')
+
+       shell('''
+       git clone --bare https://\$BB_USER:\$BB_PASS@bitbucket.org/uqam/blocks_panopto.git;  
+       cd blocks_panopto.git;  
+       git remote add --mirror=fetch github https://github.com/Panopto/Moodle-2.0-plugin-for-Panopto;  
+       git fetch github;  git fetch github --tags;  git push origin --all;  git push origin --tags
+       ''')
+
+       shell('''
+       git clone --bare https://\$BB_USER:\$BB_PASS@bitbucket.org/uqam/course_format_topcoll.git;  
+       cd course_format_topcoll.git;  
+       git remote add --mirror=fetch github https://github.com/gjb2048/moodle-format_topcoll.git;  
+       git fetch github;  git fetch github --tags;  git push origin --all;  git push origin --tags
+       ''')
+
+       shell('''
        git clone --bare https://\$BB_USER:\$BB_PASS@bitbucket.org/uqam/moodle.git;  
        cd moodle.git;  
        git remote add --mirror=fetch github https://github.com/moodle/moodle.git;  
