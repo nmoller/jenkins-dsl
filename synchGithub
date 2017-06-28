@@ -10,6 +10,11 @@ job('ENA-SynchGH') {
     }
 
     steps {
-    	shell("git clone --bare https://\$BB_USER:\$BB_PASS@bitbucket.org/uqam/moodle.git;  cd moodle.git;  git remote add --mirror=fetch github https://github.com/moodle/moodle.git;  git fetch github;  git fetch github --tags;  git push origin --all;  git push origin --tags")
+    	shell('''
+       git clone --bare https://\$BB_USER:\$BB_PASS@bitbucket.org/uqam/moodle.git;  
+       cd moodle.git;  
+       git remote add --mirror=fetch github https://github.com/moodle/moodle.git;  
+       git fetch github;  git fetch github --tags;  git push origin --all;  git push origin --tags
+       ''')
     }
 }
