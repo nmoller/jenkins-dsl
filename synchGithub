@@ -1,0 +1,24 @@
+job('ENA-SynchGH') {
+
+    triggers {
+        cron('5 2 * * 4')
+    }
+    wrappers {
+        credentialsBinding {
+            usernamePassword('BB_USER', 'BB_PASS', 'ENA-mdl')
+        }
+    }
+
+    steps {
+    	shell("git clone --bare https://\$BB_USER:\$BB_PASS@bitbucket.org/uqam/moodle.git")
+
+		shell("cd moodle.git")
+
+		shell("git remote add --mirror=fetch github https://github.com/moodle/moodle.git")
+		shell("git fetch github")
+		shell("git fetch github --tags")
+
+		shell("git push origin --all")
+		shell("git push origin --tags")
+    }
+}
