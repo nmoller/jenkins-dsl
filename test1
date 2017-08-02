@@ -42,7 +42,7 @@ job('Moodle-test') {
 	            remote {
 	                url(depot)
 	                // C'est le id de l'identifiant..
-	                credentials('5e10a0ed-a2f0-476e-ad95-956149d7fd62')
+	                credentials('uqamena-BB')
 	                if (mybranch == null) {
 	                	branch('UQAM_30_DEV')
 	                } else {
@@ -70,7 +70,7 @@ job('Moodle-test') {
 		dockerBuildAndPublish {
             repositoryName('nmolleruq/uqammdl')
             tag('${GIT_REVISION,length=5}')
-            registryCredentials('dockerhub-nmolleruq')
+            registryCredentials('nmolleruq')
             forcePull(false)
             forceTag(false)
             createFingerprints(false)
