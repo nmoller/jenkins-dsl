@@ -79,12 +79,13 @@ job('Moodle-test') {
 
 		dockerBuildAndPublish {
             repositoryName('nmolleruq/uqammdl')
-            tag('${VERSION}')
             registryCredentials('nmolleruq')
             forcePull(false)
             forceTag(false)
             createFingerprints(false)
             skipDecorate()
+            tag('${VERSION}')
+            skipTagAsLatest()
         }
 	}
 }
