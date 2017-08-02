@@ -73,7 +73,10 @@ job('Moodle-test') {
 		// Mettre le Dockerfile à la racine du $WORKSPACE
 		shell("cp \$WORKSPACE/docker/Dockerfile \$WORKSPACE")
 		shell(''' 
-		mkdir \$WORKSPACE/php-config
+		if [ ! -f \$WORKSPACE/php-config ]
+		then
+		   mkdir \$WORKSPACE/php-config
+		fi
 		cp \$WORKSPACE/docker/php-config/php.ini \$WORKSPACE/php-config
 		''')
 
