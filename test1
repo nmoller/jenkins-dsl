@@ -31,6 +31,9 @@ def mybranches = [
 ]
 
 job('Moodle-test') {
+    parameters {
+     stringParam('VERSION', 'v0.9.48Saml') 
+   }
 	multiscm {
 	 def mycomps = components.keySet()
 		mycomps.each {
@@ -69,7 +72,7 @@ job('Moodle-test') {
 
 		dockerBuildAndPublish {
             repositoryName('nmolleruq/uqammdl')
-            tag('${GIT_REVISION,length=5}')
+            tag('${VERSION}')
             registryCredentials('nmolleruq')
             forcePull(false)
             forceTag(false)
