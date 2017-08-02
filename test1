@@ -53,6 +53,9 @@ job('Moodle-test') {
 	                }
 	            }
 	            extensions {
+	            	cloneOptions {
+	            	    shallow()
+	            	}
 		            cleanAfterCheckout()
 		            relativeTargetDirectory(folder)
 	            }
