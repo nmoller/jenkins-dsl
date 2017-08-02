@@ -27,7 +27,7 @@ def mybranches = [
 	'uqam/moodle':         'MOODLE_33_STABLE',
 	'uqam/auth_saml2':     'MOODLE_33PLUS', 
 	'uqam/configphp' :     'UQAM_30_k8s',
-	'uqam/docker-mdluqam': 'UQAM_WEB'
+	'uqam/docker-mdluqam': 'UQAM_WEB_STABLE'
 ]
 
 job('Moodle-test') {
@@ -78,6 +78,7 @@ job('Moodle-test') {
 		   mkdir \$WORKSPACE/php-config
 		fi
 		cp \$WORKSPACE/docker/php-config/php.ini \$WORKSPACE/php-config
+		cp \$WORKSPACE/docker/apache2.conf \$WORKSPACE
 		''')
 
 		dockerBuildAndPublish {
