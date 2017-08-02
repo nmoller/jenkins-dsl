@@ -72,6 +72,10 @@ job('Moodle-test') {
 		shell("rm -rf \$WORKSPACE/moodle/auth/saml2/.git")
 		// Mettre le Dockerfile à la racine du $WORKSPACE
 		shell("cp \$WORKSPACE/docker/Dockerfile \$WORKSPACE")
+		shell(''' 
+		mkdir \$WORKSPACE/php-config
+		cp \$WORKSPACE/docker/php-config/php.ini \$WORKSPACE/php-config
+		''')
 
 		dockerBuildAndPublish {
             repositoryName('nmolleruq/uqammdl')
