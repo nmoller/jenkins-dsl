@@ -1,0 +1,40 @@
+job('Moodle-codes') {
+    parameters {
+     stringParam('VERSION', 'v0.1', 'Mettre à jour la version pour k8s assure un pull.') 
+   }
+	multiscm {
+	 git {
+            remote {
+                url("https://bitbucket.org/uqam/gestioncodes.git")
+                // C'est le id de l'identifiant..
+                credentials('uqamena-BB')
+            	branch('UQAM_30_SQLITE')
+            }
+            extensions {
+            	cloneOptions {
+            	    shallow()
+            	}
+	            cleanAfterCheckout()
+	            relativeTargetDirectory(folder)
+            }
+	    }
+	}
+
+	steps {
+	    // Etape anterieure genere folders @tmp qu'on veut efface.
+		shell("find \$WORKSPACE -name '*@tmp' -exec rm -rf {} +; ")
+		// À révoir pour que ça marche pour toute la gangue.
+		shell("rm -rf \$WORKSPACE/.git")
+
+		dockerBuildAndPublish {
+            repositoryName('nmolleruq/moodlecodes')
+            registryCredentials('nmolleruq')
+            forcePull(false)
+            forceTag(false)
+            createFingerprints(false)
+            skipDecorate()
+            tag('${VERSION}')
+            skipTagAsLatest()
+        }
+	}
+}
