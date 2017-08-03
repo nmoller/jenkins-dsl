@@ -15,7 +15,6 @@ job('Moodle-codes') {
             	    shallow()
             	}
 	            cleanAfterCheckout()
-	            relativeTargetDirectory(folder)
             }
 	    }
 	}
