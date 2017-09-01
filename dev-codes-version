@@ -1,0 +1,94 @@
+job('Moodle-dev-codes-version') {
+
+    parameters {
+     stringParam('COMMITMSG', 'Commit de test', 'Message pour commit.') 
+   }
+
+    wrappers {
+        credentialsBinding {
+            usernamePassword('BB_USER', 'BB_PASS', 'ENA-mdl')
+        }
+    }
+
+    multiscm {
+      def baseBB = "https://bitbucket.org/uqam/"
+
+      git {
+            
+            remote {
+                url(baseBB + "moodle.git")
+                branch('UQAM_30_DEV')
+            }
+            extensions {
+              cloneOptions {
+                  shallow()
+              }
+              cleanAfterCheckout()
+              relativeTargetDirectory('moodle')
+            }
+      }
+
+      git {
+            def baseBB = "https://bitbucket.org/uqam/"
+            remote {
+                url(baseBB + "local_uqamlib.git")
+                branch('UQAM_30_MM-608')
+            }
+            extensions {
+              cloneOptions {
+                  shallow()
+              }
+              cleanAfterCheckout()
+              relativeTargetDirectory('moodle/local/uqamlib')
+            }
+      }
+
+      git {
+            def baseBB = "https://bitbucket.org/uqam/"
+            remote {
+                url(baseBB + "local_codestests.git")
+                branch('UQAM_30_MM-566')
+            }
+            extensions {
+              cloneOptions {
+                  shallow()
+              }
+              cleanAfterCheckout()
+              relativeTargetDirectory('moodle/local/codestests')
+            }
+      }
+    
+
+      git {
+            def baseBB = "https://bitbucket.org/uqam/"
+            remote {
+                url(baseBB + "local_codesexternes.git")
+                branch('UQAM_30_MM-566')
+            }
+            extensions {
+              cloneOptions {
+                  shallow()
+              }
+              cleanAfterCheckout()
+              relativeTargetDirectory('moodle/local/codesexternes')
+            }
+      }
+    
+
+    }
+
+    steps {
+       shell('''
+       rm -rf \$WORKSPACE/moodle/local/uqamlib.git"; 
+       rm -rf \$WORKSPACE/moodle/local/codestests.git"; 
+       rm -rf \$WORKSPACE/moodle/local/codesexternes.git";
+       cd \$WORKSPACE/moodle
+       git add local/uqamlib
+       git add local/codestests
+       git add local/codesexternes
+       git commit -m "${COMMITMSG}"
+       ''')
+
+       
+    }
+}
