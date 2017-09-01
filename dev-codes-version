@@ -17,6 +17,7 @@ job('Moodle-dev-codes-version') {
             
             remote {
                 url(baseBB + "moodle.git")
+                credentials('uqamena-BB')
                 branch('UQAM_30_DEV')
             }
             extensions {
@@ -32,6 +33,7 @@ job('Moodle-dev-codes-version') {
             def baseBB = "https://bitbucket.org/uqam/"
             remote {
                 url(baseBB + "local_uqamlib.git")
+                credentials('uqamena-BB')
                 branch('UQAM_30_MM-608')
             }
             extensions {
@@ -47,6 +49,7 @@ job('Moodle-dev-codes-version') {
             def baseBB = "https://bitbucket.org/uqam/"
             remote {
                 url(baseBB + "local_codestests.git")
+                credentials('uqamena-BB')
                 branch('UQAM_30_MM-566')
             }
             extensions {
@@ -63,6 +66,7 @@ job('Moodle-dev-codes-version') {
             def baseBB = "https://bitbucket.org/uqam/"
             remote {
                 url(baseBB + "local_codesexternes.git")
+                credentials('uqamena-BB')
                 branch('UQAM_30_MM-566')
             }
             extensions {
