@@ -99,6 +99,8 @@ job('Moodle-dev-codes-version') {
        cd \$WORKSPACE/moodle
        git add local/uqamlib local/codestests local/codesexternes
        git commit -m "${COMMITMSG}"
+       git checkout -b UQAM_DEV_TEMP1
+       git push origin UQAM_DEV_TEMP1:UQAM_DEV_TEMP1
        ''')
 
        
