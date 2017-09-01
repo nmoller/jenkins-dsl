@@ -40,7 +40,7 @@ job('Moodle-dev-codes-version') {
                   shallow()
               }
               cleanAfterCheckout()
-              relativeTargetDirectory('moodle/local/uqamlib')
+              relativeTargetDirectory('local/uqamlib')
             }
       }
 
@@ -55,7 +55,7 @@ job('Moodle-dev-codes-version') {
                   shallow()
               }
               cleanAfterCheckout()
-              relativeTargetDirectory('moodle/local/codestests')
+              relativeTargetDirectory('local/codestests')
             }
       }
     
@@ -71,7 +71,7 @@ job('Moodle-dev-codes-version') {
                   shallow()
               }
               cleanAfterCheckout()
-              relativeTargetDirectory('moodle/local/codesexternes')
+              relativeTargetDirectory('local/codesexternes')
             }
       }
     
@@ -80,13 +80,24 @@ job('Moodle-dev-codes-version') {
 
     steps {
        shell('''
-       rm -rf \$WORKSPACE/moodle/local/uqamlib.git;
-       rm -rf \$WORKSPACE/moodle/local/codestests.git
-       rm -rf \$WORKSPACE/moodle/local/codesexternes.git
+       rm -rf \$WORKSPACE/local/uqamlib.git;
+       rm -rf \$WORKSPACE/local/codestests.git
+       rm -rf \$WORKSPACE/local/codesexternes.git
+       # Clean old stuff 
+       rm -rf \$WORKSPACE/moodle/local/uqamlib
+       cp -r \$WORKSPACE/local/uqamlib  \$WORKSPACE/moodle/local/uqamlib
+       rm -rf \$WORKSPACE/local/uqamlib
+       # Clean old stuff 
+       rm -rf \$WORKSPACE/moodle/local/codestests
+       cp -r \$WORKSPACE/local/codestests  \$WORKSPACE/moodle/local/codestests
+       rm -rf \$WORKSPACE/local/codestests
+       # Clean old stuff 
+       rm -rf \$WORKSPACE/moodle/local/codesexternes
+       cp -r \$WORKSPACE/local/codesexternes  \$WORKSPACE/moodle/local/codesexternes
+       rm -rf \$WORKSPACE/local/codesexternes
+
        cd \$WORKSPACE/moodle
-       git add local/uqamlib
-       git add local/codestests
-       git add local/codesexternes
+       git add local/uqamlib local/codestests local/codesexternes
        git commit -m "${COMMITMSG}"
        ''')
 
