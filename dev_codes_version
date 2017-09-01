@@ -80,9 +80,9 @@ job('Moodle-dev-codes-version') {
 
     steps {
        shell('''
-       rm -rf \$WORKSPACE/moodle/local/uqamlib.git"; 
-       rm -rf \$WORKSPACE/moodle/local/codestests.git"; 
-       rm -rf \$WORKSPACE/moodle/local/codesexternes.git";
+       rm -rf \$WORKSPACE/moodle/local/uqamlib.git;
+       rm -rf \$WORKSPACE/moodle/local/codestests.git
+       rm -rf \$WORKSPACE/moodle/local/codesexternes.git
        cd \$WORKSPACE/moodle
        git add local/uqamlib
        git add local/codestests
