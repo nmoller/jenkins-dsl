@@ -6,7 +6,7 @@ job('Moodle-dev-codes-version') {
 
     wrappers {
         credentialsBinding {
-            usernamePassword('BB_USER', 'BB_PASS', 'ENA-mdl')
+            usernamePassword('BB_USER', 'BB_PASS', 'uqamena-BB')
         }
     }
 
