@@ -95,7 +95,7 @@ job('Moodle-dev-codes-version') {
             remote {
                 url(baseBB + "local_resetext.git")
                 credentials('uqamena-BB')
-                branch('UQAM_30_MM-608-SHIB')
+                branch('UQAM_30_MM-575')
             }
             extensions {
               cloneOptions {
