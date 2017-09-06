@@ -75,27 +75,71 @@ job('Moodle-dev-codes-version') {
               relativeTargetDirectory('local/codesexternes')
             }
       }
+
+      git {
+            remote {
+                url(baseBB + "local_uqinfosperso.git")
+                credentials('uqamena-BB')
+                branch('UQAM_30_MM-608-SHIB')
+            }
+            extensions {
+              cloneOptions {
+                  shallow()
+              }
+              cleanAfterCheckout()
+              relativeTargetDirectory('local/uqinfosperso')
+            }
+      }
+
+      git {
+            remote {
+                url(baseBB + "local_resetext.git")
+                credentials('uqamena-BB')
+                branch('UQAM_30_MM-608-SHIB')
+            }
+            extensions {
+              cloneOptions {
+                  shallow()
+              }
+              cleanAfterCheckout()
+              relativeTargetDirectory('local/resetext')
+            }
+      }
     
 
     }
 
     steps {
        shell('''
-       rm -rf \$WORKSPACE/local/uqamlib.git;
-       rm -rf \$WORKSPACE/local/codestests.git
-       rm -rf \$WORKSPACE/local/codesexternes.git
+       
+       
+       
        # Clean old stuff 
+       rm -rf \$WORKSPACE/local/uqamlib.git;
        rm -rf \$WORKSPACE/moodle/local/uqamlib
        cp -r \$WORKSPACE/local/uqamlib  \$WORKSPACE/moodle/local/uqamlib
        rm -rf \$WORKSPACE/local/uqamlib
        # Clean old stuff 
+       rm -rf \$WORKSPACE/local/codestests.git
        rm -rf \$WORKSPACE/moodle/local/codestests
        cp -r \$WORKSPACE/local/codestests  \$WORKSPACE/moodle/local/codestests
        rm -rf \$WORKSPACE/local/codestests
        # Clean old stuff 
+       rm -rf \$WORKSPACE/local/codesexternes.git
        rm -rf \$WORKSPACE/moodle/local/codesexternes
        cp -r \$WORKSPACE/local/codesexternes  \$WORKSPACE/moodle/local/codesexternes
        rm -rf \$WORKSPACE/local/codesexternes
+       # Clean old stuff 
+       rm -rf \$WORKSPACE/local/uqinfosperso.git
+       rm -rf \$WORKSPACE/moodle/local/uqinfosperso
+       cp -r \$WORKSPACE/local/uqinfosperso  \$WORKSPACE/moodle/local/uqinfosperso
+       rm -rf \$WORKSPACE/local/uqinfosperso
+
+       # Clean old stuff 
+       rm -rf \$WORKSPACE/local/resetext.git
+       rm -rf \$WORKSPACE/moodle/local/resetext
+       cp -r \$WORKSPACE/local/resetext  \$WORKSPACE/moodle/local/resetext
+       rm -rf \$WORKSPACE/local/resetext
 
        cd \$WORKSPACE/moodle
        git add local/uqamlib local/codestests local/codesexternes
