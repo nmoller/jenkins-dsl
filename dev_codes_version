@@ -95,6 +95,11 @@ job('Moodle-dev-codes-version') {
 
     steps {
 shell('''
+# Commencer clean
+if [ -d \$WORKSPACE/moodle ]
+then
+   rm -rf \$WORKSPACE/moodle
+fi
 # Verifier si la branche existe
 CLONE_BRANCH=${BRANCH}
 FIRST=`git ls-remote --heads https://\$BB_USER:\$BB_PASS@bitbucket.org/uqam/moodle.git ${BRANCH} | wc -l `
