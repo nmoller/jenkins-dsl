@@ -15,22 +15,6 @@ job('Moodle-dev-codes-version') {
       def baseBB = "https://bitbucket.org/uqam/"
 
       git {
-            
-            remote {
-                url(baseBB + "moodle.git")
-                credentials('uqamena-BB')
-                branch('UQAM_30_DEV')
-            }
-            extensions {
-              cloneOptions {
-                  shallow()
-              }
-              cleanAfterCheckout()
-              relativeTargetDirectory('moodle')
-            }
-      }
-
-      git {
             remote {
                 url(baseBB + "local_uqamlib.git")
                 credentials('uqamena-BB')
@@ -110,43 +94,55 @@ job('Moodle-dev-codes-version') {
     }
 
     steps {
-       shell('''
-       
-       
-       
-       # Clean old stuff 
-       rm -rf \$WORKSPACE/local/uqamlib.git;
-       rm -rf \$WORKSPACE/moodle/local/uqamlib
-       cp -r \$WORKSPACE/local/uqamlib  \$WORKSPACE/moodle/local/uqamlib
-       rm -rf \$WORKSPACE/local/uqamlib
-       # Clean old stuff 
-       rm -rf \$WORKSPACE/local/codestests.git
-       rm -rf \$WORKSPACE/moodle/local/codestests
-       cp -r \$WORKSPACE/local/codestests  \$WORKSPACE/moodle/local/codestests
-       rm -rf \$WORKSPACE/local/codestests
-       # Clean old stuff 
-       rm -rf \$WORKSPACE/local/codesexternes.git
-       rm -rf \$WORKSPACE/moodle/local/codesexternes
-       cp -r \$WORKSPACE/local/codesexternes  \$WORKSPACE/moodle/local/codesexternes
-       rm -rf \$WORKSPACE/local/codesexternes
-       # Clean old stuff 
-       rm -rf \$WORKSPACE/local/uqinfosperso.git
-       rm -rf \$WORKSPACE/moodle/local/uqinfosperso
-       cp -r \$WORKSPACE/local/uqinfosperso  \$WORKSPACE/moodle/local/uqinfosperso
-       rm -rf \$WORKSPACE/local/uqinfosperso
+shell('''
+# Verifier si la branche existe
+CLONE_BRANCH=${BRANCH}
+FIRST=`git ls-remote --heads https://\$BB_USER:\$BB_PASS@bitbucket.org/uqam/moodle.git ${BRANCH} | wc -l `
+# Si la branche n'existe pas encore prendre autre
+if [ "${FIRST}" -eq 0 ]
+then
+  CLONE_BRANCH='UQAM_30_INT'
+fi
+git clone --depth 1 --branch ${CLONE_BRANCH} --single-branch git@bitbucket.org:uqam/moodle.git \$WORKSPACE/moodle
 
-       # Clean old stuff 
-       rm -rf \$WORKSPACE/local/resetext.git
-       rm -rf \$WORKSPACE/moodle/local/resetext
-       cp -r \$WORKSPACE/local/resetext  \$WORKSPACE/moodle/local/resetext
-       rm -rf \$WORKSPACE/local/resetext
+       
+#  uqamlib
+rm -rf \$WORKSPACE/local/uqamlib.git;
+rm -rf \$WORKSPACE/moodle/local/uqamlib
+cp -r \$WORKSPACE/local/uqamlib  \$WORKSPACE/moodle/local/uqamlib
+rm -rf \$WORKSPACE/local/uqamlib
+#  codestests
+rm -rf \$WORKSPACE/local/codestests.git
+rm -rf \$WORKSPACE/moodle/local/codestests
+cp -r \$WORKSPACE/local/codestests  \$WORKSPACE/moodle/local/codestests
+rm -rf \$WORKSPACE/local/codestests
+# codesexternes
+rm -rf \$WORKSPACE/local/codesexternes.git
+rm -rf \$WORKSPACE/moodle/local/codesexternes
+cp -r \$WORKSPACE/local/codesexternes  \$WORKSPACE/moodle/local/codesexternes
+rm -rf \$WORKSPACE/local/codesexternes
+# uqinfosperso 
+rm -rf \$WORKSPACE/local/uqinfosperso.git
+rm -rf \$WORKSPACE/moodle/local/uqinfosperso
+cp -r \$WORKSPACE/local/uqinfosperso  \$WORKSPACE/moodle/local/uqinfosperso
+rm -rf \$WORKSPACE/local/uqinfosperso
 
-       cd \$WORKSPACE/moodle
-       git add local/uqamlib local/codestests local/codesexternes
-       git commit -m "${COMMITMSG}"
-       git checkout -b ${BRANCH}
-       git remote add bb https://\$BB_USER:\$BB_PASS@bitbucket.org/uqam/moodle.git
-       git push bb ${BRANCH}:${BRANCH}
-       ''')
+# resetext 
+rm -rf \$WORKSPACE/local/resetext.git
+rm -rf \$WORKSPACE/moodle/local/resetext
+cp -r \$WORKSPACE/local/resetext  \$WORKSPACE/moodle/local/resetext
+rm -rf \$WORKSPACE/local/resetext
+
+# Committer
+cd \$WORKSPACE/moodle
+git add local/uqamlib local/codestests local/codesexternes local/resetext local/uqinfosperso
+git commit -m "${COMMITMSG}"
+
+if [ "${CLONE_BRANCH}"  != "${BRANCH}" ]
+then
+    git checkout -b ${BRANCH}
+fi
+git push bb ${BRANCH}:${BRANCH}
+''')
     }
 }
