@@ -1,0 +1,50 @@
+job('Moodle-new-version') {
+    parameters {
+        stringParam('COMMITMSG', 'Commit de test', 'Message pour commit.')
+        stringParam('BRANCH', 'UQAM_DEV_TEMP', 'Nom de la branche a creer.')
+    }
+    wrappers {
+        credentialsBinding {
+            usernamePassword('BB_USER', 'BB_PASS', 'uqamena-BB')
+          }
+    }
+    multiscm {
+        git {
+          remote {
+            url('https://bitbucket.org/uqam/auth_saml2.git')
+            credentials('uqamena-BB')
+            branch('UQAM_30_DEV')
+          }
+          extensions {
+            cloneOptions {
+              shallow()
+            }
+            cleanAfterCheckout()
+            relativeTargetDirectory('component/auth/saml2')
+          }
+        }
+  }
+
+    steps {
+      shell('''
+# Commencer clean
+if [ -d \$WORKSPACE/moodle ]
+then
+   rm -rf \$WORKSPACE/moodle
+fi
+# Verifier si la branche existe
+CLONE_BRANCH=${BRANCH}
+FIRST=`git ls-remote --heads https://\$BB_USER:\$BB_PASS@bitbucket.org/uqam/moodle.git ${BRANCH} | wc -l `
+# Si la branche n'existe pas encore prendre autre
+if [ "${FIRST}" -eq 0 ]
+then
+  CLONE_BRANCH='UQAM_30_INT'
+fi
+git clone --depth 1 --branch ${CLONE_BRANCH} --single-branch git@bitbucket.org:uqam/moodle.git \$WORKSPACE/moodle
+# auth_saml2
+rm -rf \$WORKSPACE/component/auth/saml2/.git
+if [ -d \$WORKSPACE/moodle/auth/saml2 ]
+    rm -rf \$WORKSPACE/moodle/auth/saml2
+fi
+cp -r \$WORKSPACE/component/auth/saml2 \$WORKSPACE/moodle/auth/saml2
+rm -rf \$WORKSPACE/component/auth/saml2
